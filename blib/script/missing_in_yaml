@@ -1,0 +1,25 @@
+#!/usr/bin/env perl
+
+use strict; use warnings;
+use i18n::Helper;
+use Data::Dumper;
+
+
+my $yamlfile = shift;
+my $dir = shift;
+
+my $yamlp = ymls2paths({ignore_first => 1, files => [$yamlfile]});
+my $filesp = files2paths($dir);
+
+
+
+# print Dumper $yamlp;
+# print Dumper $filesp->{paths};
+my $missing_in_yaml = find_missing_in_yaml($yamlp,$filesp->{paths});
+
+foreach my $key (sort keys %$missing_in_yaml) {
+	my $values = $missing_in_yaml->{$key};
+	my $first = shift @{$values};
+	printf "%-60.60s\t=>\t%s\n",$key,$first;
+	foreach(@{$values}){ print ' 'x60,"\t |\t",$_,"\n"; }
+}

@@ -1,0 +1,20 @@
+---
+abstract: 'The great new i18n::Helper!'
+author:
+  - 'Andre Santos <andrefs@cpan.org>'
+build_requires:
+  Test::More: 0
+dynamic_config: 0
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110440'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: i18n-Helper
+provides:
+  i18n::Helper:
+    file: lib/i18n/Helper.pm
+    version: 0.01
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01

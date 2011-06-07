@@ -1,0 +1,24 @@
+#!/usr/bin/env perl
+
+use strict; use warnings;
+use i18n::Helper;
+use Data::Dumper;
+
+my $left  = shift;
+my $right = shift;
+
+my $lyaml = ymls2paths({ignore_first => 1, files => [$left]});
+my $ryaml = ymls2paths({ignore_first => 1, files => [$right]});
+
+
+
+# print Dumper $yamlp;
+# print Dumper $filesp->{paths};
+my $diff = compare_i18n_yamls($lyaml,$ryaml);
+$diff =~ s{^(.*)\|(.*)$}{
+			my ($left,$right) = ($1,$2);
+			my $length = length($1);
+			my $space = $left =~ s/[^\t]/ /gr;
+			"$left<\n$space>$right"
+		}gme;
+print "$diff\n";
