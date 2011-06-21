@@ -41,7 +41,7 @@ if you don't export anything, such as for a purely object-oriented module.
 use base 'Exporter';
 our @EXPORT = (qw/
 	compare_i18n_yamls
-	find_unnused
+	find_unused
 	find_missing_in_yaml
 	files2paths
 	code2paths
@@ -69,18 +69,18 @@ sub compare_i18n_yamls {
 	unlink "/tmp/$$.right";
 }
 
-=head2 find_unnused
+=head2 find_unused
 
 =cut
 
-sub find_unnused {
+sub find_unused {
 	my ($yaml,$paths) = @_;
-	my $unnused = { %$yaml };
+	my $unused = { %$yaml };
 
 	foreach my $key (keys %$paths){
-		delete $unnused->{$key} if defined($unnused->{$key});
+		delete $unused->{$key} if defined($unused->{$key});
 	}
-	return $unnused;
+	return $unused;
 }
 
 =head2 find_missing_in_yaml
