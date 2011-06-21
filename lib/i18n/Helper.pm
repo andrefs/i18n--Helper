@@ -3,7 +3,6 @@ package i18n::Helper;
 use warnings;
 use strict;
 use YAML::XS;
-use Data::Dumper::Names;
 use feature 'state';
 
 
