@@ -9,6 +9,7 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/i18n/Helper.pm',
     build_requires => {
         'Test::More' => 0,
+        'YAML::XS' => 0,
     },
     add_to_cleanup      => [ 'i18n-Helper-*' ],
     create_makefile_pl => 'traditional',

@@ -8,7 +8,7 @@ use Data::Dumper;
 my $yamlfile = shift;
 my $dir = shift;
 
-my $yamlp = ymls2paths({ignore_first => 1, files => [$yamlfile]});
+my $yamlp = ymls2paths({ignore_first => 1, files => [$yamlfile]}) or die $?;
 my $filesp = files2paths($dir);
 
 

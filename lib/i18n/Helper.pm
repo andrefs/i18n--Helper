@@ -4,7 +4,6 @@ use warnings;
 use strict;
 use YAML::XS;
 use Data::Dumper::Names;
-use File::Find;
 use feature 'state';
 
 
@@ -105,7 +104,8 @@ sub find_missing_in_yaml {
 sub files2paths {
 	my ($folder) = shift;
 	our ($paths,$codepaths) = ({},{});
-	File::Find::find({wanted => \&code2paths, no_chdir => 1 },($folder));
+	open FILES,'-|',qq{find "$folder" -type f};
+	while(<FILES>){ chomp; code2paths($_); }
 	return { paths => $paths, codepaths => $codepaths };
 }
 	
@@ -114,8 +114,8 @@ sub files2paths {
 =cut
 
 sub code2paths {
+	my $file = shift;
 	our ($paths,$codepaths);
-	my $file = $File::Find::name;
 	if( -f $file and qx{file -iz $file} =~ /text\/plain/){
 		unless (open FILE,'<',$file){ warn "Could not open file '$file'"; next;	}
 		while(<FILE>){

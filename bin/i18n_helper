@@ -1,0 +1,129 @@
+#!/bin/bash
+
+
+function ymlvsdir {
+	echo "============================================"
+	echo "Trying to find unnused translations in YAML."
+	echo
+	unset YAML
+	yml_lst
+	if ! [ -e "$YAML" ]; then
+		echo "'$YAML': no such file or directory!"
+		exit
+	fi
+	find_unnused $YAML '.' | less
+}
+
+function dirvsyml {
+	echo "============================================"
+	echo "Trying to find translations missing in YAML."
+	echo
+	unset YAML
+	yml_lst
+	if ! [ -e "$YAML" ]; then
+		echo "'$YAML': no such file or directory!"
+		exit
+	fi
+	missing_in_yaml $YAML '.' | less
+}
+
+function ymlvsyml {
+	echo "============================================"
+	echo "Comparing two YAMLs"
+	echo
+	unset YAML
+	yml_lst
+	if ! [ -e "$YAML" ]; then
+		echo "'$YAML': no such file or directory!"
+		exit
+	fi
+	YAML1=$YAML
+	unset YAML
+	yml_lst
+	if ! [ -e "$YAML" ]; then
+		echo "'$YAML': no such file or directory!"
+		exit
+	fi
+	YAML2=$YAML
+	compare_i18n_yamls $YAML1 $YAML2 | less
+}
+
+function yml_lst {
+	YMLLIST=$(find . -type f | grep 'config/locales' | grep -v -i vendor | grep -P 'yml$|yaml$')
+	if [ -z "$YMLLIST" ]; then
+		read -p "No YAMLs available at config/locales, do you want to choose another one? [Y/n] " 
+		if [[ "$REPLY" == "n" || "$REPLY" == "N" ]]; then
+        	echo "Exiting..."
+			exit 0
+		else
+			read -p "Enter the path to the YAML file: " -e YAML
+		fi
+	else
+		echo "You currently have these YAMLs available:"
+		echo 
+		printf "%s\n" "${YMLLIST[@]}" | cat <(echo "Cancel.") - | nl -v0 | perl -plne 's/\s+(\d+)\s+/ [$1] /g'
+	    echo
+        read -p "Which one do you want to choose? [Choose other] " -e NUMBER
+        while ! [[ "$NUMBER" =~ ^[0-9]+$  || -z "$NUMBER" ]]; do
+            echo "$NUMBER is not a valid number."
+			echo
+			printf "%s\n" "${YMLLIST[@]}" | cat <(echo "Cancel.") - | nl -v0 | perl -plne 's/\s+(\d+)\s+/ [$1] /g'
+            read -p "Please enter the number of the YAML you want to choose: [Choose other] " -e NUMBER
+        done
+		if [ "$NUMBER" == "0" ]; then
+            echo "Exiting..."
+			exit 0
+        elif [ -z "$NUMBER" ]; then
+			read -p "Enter the path to the YAML file: " -e YAML
+		else
+			YAML=$(printf "%s\n" "${YMLLIST[@]}" | head -$NUMBER | tail -1)
+		fi
+	fi        
+}
+
+function choose_option {
+	OPTLIST=$(echo -e "Compare 2 YAML files      ( YAML vs YAML )\nFind unnused translations ( YAML vs dir  )\nFind missing translations ( dir  vs YAML )");
+	echo -e "\nWelcome to i18n_helper!\nThis script helps to find missing or unnused translations\nin Rails apps and YAML files, and it's based on the\ni18n::Helper Perl module.\n\n";
+	echo 
+	printf "%s\n" "${OPTLIST[@]}" | cat <(echo "Exit.") - | nl -v0 | perl -plne 's/\s+(\d+)\s+/ [$1] /g'
+	echo
+    read -p "Choose an option: " -e NUMBER
+    while ! [[ "$NUMBER" =~ ^[0-9]+$  || -z "$NUMBER" ]]; do
+        echo "$NUMBER is not a valid number."
+		echo
+		printf "%s\n" "${OPTLIST[@]}" | cat <(echo "Cancel.") - | nl -v0 | perl -plne 's/\s+(\d+)\s+/ [$1] /g'
+        read -p "Please choose an option: " -e NUMBER
+    done
+	if [ "$NUMBER" == "0" ]; then
+        echo "Exiting..."
+		exit
+	fi
+	case "$NUMBER" in
+	  "0" ) echo "Exiting..."; exit 0;;
+	  "1" ) ymlvsyml ;;
+	  "2" ) ymlvsdir ;;
+	  "3" ) dirvsyml ;;
+	  *   )   
+		echo "Wrong option!"
+		exit 0
+	  	;;  
+	esac
+exit 1
+}
+
+
+choose_option
+	
+
+#	read -p "Please choose a YAML file: [Choose other] " -e NUMBER
+#	while ! [[ "$NUMBER" =~ ^[0-9]+$ ]]; do
+#	    echo "$NUMBER is not a valid number."
+#	    ls -1 /etc/apache2/sites-available | nl | perl -plne 's/\s+(\d+)\s+/ [$1] /g'
+#	    read -p "Please enter the number of the site you want to remove: [0 to quit] " -e NUMBER
+#	done
+#	if [ "$NUMBER" == "0" ]; then
+#	    echo "Operation canceled."
+#	    exit 0
+#	fi
+#	SITE=$(ls -1 /etc/apache2/sites-available | head -$NUMBER | tail -1)
+
