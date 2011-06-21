@@ -7,7 +7,7 @@ This script should be called inside the site_files folder.
 
 INSTALLATION
 
-To install this module, run the following commands:
+To install this module, run the following commands (as root):
 
 	curl -L http://cpanmin.us | perl - --no-interactive  .
 
