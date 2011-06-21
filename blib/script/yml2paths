@@ -1,9 +1,0 @@
-#!/usr/bin/env perl
-
-use strict; use warnings;
-use i18n::Helper;
-use Data::Dumper;
-
-
-my $coiso = ymls2paths({ignore_first => 1, files => \@ARGV });
-print Dumper $coiso;
