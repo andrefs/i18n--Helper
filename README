@@ -9,10 +9,7 @@ INSTALLATION
 
 To install this module, run the following commands:
 
-	perl Build.PL
-	./Build
-	./Build test
-	./Build install
+	curl -L http://cpanmin.us | perl - --no-interactive  .
 
 SUPPORT AND DOCUMENTATION
 
