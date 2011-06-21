@@ -16,7 +16,8 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Test::More" : 0
+            "Test::More" : 0,
+            "YAML::XS" : 0
          }
       }
    },

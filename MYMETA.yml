@@ -4,6 +4,7 @@ author:
   - 'Andre Santos <andrefs@cpan.org>'
 build_requires:
   Test::More: 0
+  YAML::XS: 0
 dynamic_config: 0
 generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110440'
 license: perl

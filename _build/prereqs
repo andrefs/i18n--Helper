@@ -1,6 +1,7 @@
 do{ my $x = {
        'build_requires' => {
-                             'Test::More' => 0
+                             'Test::More' => 0,
+                             'YAML::XS' => 0
                            },
        'conflicts' => {},
        'requires' => {},

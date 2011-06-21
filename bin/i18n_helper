@@ -3,7 +3,7 @@
 
 function ymlvsdir {
 	echo "============================================"
-	echo "Trying to find unnused translations in YAML."
+	echo "Trying to find unused translations in YAML."
 	echo
 	unset YAML
 	yml_lst
@@ -11,7 +11,7 @@ function ymlvsdir {
 		echo "'$YAML': no such file or directory!"
 		exit
 	fi
-	find_unnused $YAML '.' | less
+	find_unused $YAML '.' | less
 }
 
 function dirvsyml {
@@ -82,8 +82,8 @@ function yml_lst {
 }
 
 function choose_option {
-	OPTLIST=$(echo -e "Compare 2 YAML files      ( YAML vs YAML )\nFind unnused translations ( YAML vs dir  )\nFind missing translations ( dir  vs YAML )");
-	echo -e "\nWelcome to i18n_helper!\nThis script helps to find missing or unnused translations\nin Rails apps and YAML files, and it's based on the\ni18n::Helper Perl module.\n\n";
+	OPTLIST=$(echo -e "Compare 2 YAML files      ( YAML vs YAML )\nFind unused translations ( YAML vs dir  )\nFind missing translations ( dir  vs YAML )");
+	echo -e "\nWelcome to i18n_helper!\nThis script helps to find missing or unused translations\nin Rails apps and YAML files, and it's based on the\ni18n::Helper Perl module.\n\n";
 	echo 
 	printf "%s\n" "${OPTLIST[@]}" | cat <(echo "Exit.") - | nl -v0 | perl -plne 's/\s+(\d+)\s+/ [$1] /g'
 	echo
